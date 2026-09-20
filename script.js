@@ -161,25 +161,40 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-// ============================================
-// PORTFOLIO CAROUSEL
+  
+  // ============================================
+// PORTFOLIO CAROUSEL - FINAL FIX
 // ============================================
 
-const filterButtons = document.querySelectorAll(".filter-btn");
-const portfolioItems = Array.from(
-  document.querySelectorAll(".portfolio-item")
-);
+const filterButtons =
+  document.querySelectorAll(".filter-btn");
 
-const portfolioGrid = document.querySelector(".portfolio-grid");
-const portfolioPrev = document.querySelector(".portfolio-prev");
-const portfolioNext = document.querySelector(".portfolio-next");
-const portfolioDots = document.querySelector(".portfolio-dots");
+const portfolioItems =
+  Array.from(document.querySelectorAll(".portfolio-item"));
+
+const portfolioGrid =
+  document.querySelector(".portfolio-grid");
+
+const portfolioViewport =
+  document.querySelector(".portfolio-viewport");
+
+const portfolioPrev =
+  document.querySelector(".portfolio-prev");
+
+const portfolioNext =
+  document.querySelector(".portfolio-next");
+
+const portfolioDots =
+  document.querySelector(".portfolio-dots");
 
 let currentFilter = "logo";
 let currentPage = 0;
 
 
-// How many cards are visible
+/* =========================
+   ITEMS PER PAGE
+========================= */
+
 function getItemsPerPage() {
 
   if (window.innerWidth <= 768) {
@@ -194,199 +209,372 @@ function getItemsPerPage() {
 }
 
 
-// Get filtered items
+/* =========================
+   FILTER ITEMS
+========================= */
+
 function getFilteredItems() {
 
   return portfolioItems.filter(item => {
-    return currentFilter === "all" ||
-           item.dataset.category === currentFilter;
+
+    return (
+      currentFilter === "all" ||
+      item.dataset.category === currentFilter
+    );
+
   });
 
 }
 
 
-// Update carousel
+/* =========================
+   UPDATE PORTFOLIO
+========================= */
+
 function updatePortfolio() {
 
-  const filteredItems = getFilteredItems();
-  const itemsPerPage = getItemsPerPage();
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredItems.length / itemsPerPage)
-  );
-
-  // Keep page in range
-  if (currentPage >= totalPages) {
-    currentPage = totalPages - 1;
-  }
-
-  if (currentPage < 0) {
-    currentPage = 0;
+  if (
+    !portfolioGrid ||
+    !portfolioViewport
+  ) {
+    return;
   }
 
 
-  // Hide/show items according to filter
+  const filteredItems =
+    getFilteredItems();
+
+  const itemsPerPage =
+    getItemsPerPage();
+
+
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        filteredItems.length /
+        itemsPerPage
+      )
+    );
+
+
+  /* Keep page valid */
+
+  currentPage =
+    Math.max(
+      0,
+      Math.min(
+        currentPage,
+        totalPages - 1
+      )
+    );
+
+
+  /* =========================
+     SHOW / HIDE ITEMS
+  ========================= */
+
   portfolioItems.forEach(item => {
 
-    if (
+    const visible =
       currentFilter === "all" ||
-      item.dataset.category === currentFilter
-    ) {
-      item.style.display = "";
-    } else {
-      item.style.display = "none";
-    }
+      item.dataset.category === currentFilter;
+
+    item.style.display =
+      visible ? "block" : "none";
 
   });
 
 
-  // Calculate card width
-  const viewport = document.querySelector(".portfolio-viewport");
+  /* =========================
+     WAIT FOR LAYOUT
+  ========================= */
 
-  if (!viewport || filteredItems.length === 0) return;
+  requestAnimationFrame(() => {
 
-  const viewportWidth = viewport.clientWidth;
-
-  let cardWidth;
-  let gap = 20;
-
-  if (itemsPerPage === 3) {
-
-    cardWidth = (viewportWidth - (gap * 2)) / 3;
-
-  } else if (itemsPerPage === 2) {
-
-    cardWidth = (viewportWidth - gap) / 2;
-
-  } else {
-
-    cardWidth = viewportWidth;
-
-  }
+    const viewportWidth =
+      portfolioViewport.clientWidth;
 
 
-  // Move slider
-  const moveDistance =
-    currentPage * (cardWidth + gap) * itemsPerPage;
-
-  portfolioGrid.style.transform =
-    `translateX(-${moveDistance}px)`;
+    if (!viewportWidth) return;
 
 
-  // Arrow state
-  portfolioPrev.disabled = currentPage === 0;
+    /* Get actual CSS gap */
 
-  portfolioNext.disabled =
-    currentPage >= totalPages - 1;
+    const gridStyle =
+      window.getComputedStyle(
+        portfolioGrid
+      );
+
+    const gap =
+      parseFloat(
+        gridStyle.columnGap
+      ) || 0;
 
 
-  // Dots
-  portfolioDots.innerHTML = "";
+    /* =========================
+       CALCULATE EXACT CARD WIDTH
+    ========================= */
 
-  for (let i = 0; i < totalPages; i++) {
+    let cardWidth;
 
-    const dot = document.createElement("button");
 
-    dot.type = "button";
+    if (itemsPerPage === 1) {
 
-    dot.className = "portfolio-dot";
+      cardWidth =
+        viewportWidth;
 
-    if (i === currentPage) {
-      dot.classList.add("active");
+    } else {
+
+      cardWidth =
+        (
+          viewportWidth -
+          gap * (itemsPerPage - 1)
+        ) /
+        itemsPerPage;
+
     }
 
-    dot.setAttribute(
-      "aria-label",
-      `Go to portfolio page ${i + 1}`
-    );
 
-    dot.addEventListener("click", () => {
+    /* =========================
+       APPLY WIDTH TO VISIBLE CARDS
+    ========================= */
 
-      currentPage = i;
+    filteredItems.forEach(item => {
+
+      item.style.flex =
+        `0 0 ${cardWidth}px`;
+
+      item.style.width =
+        `${cardWidth}px`;
+
+    });
+
+
+    /* =========================
+       MOVE SLIDER
+    ========================= */
+
+    const moveDistance =
+      currentPage *
+      (cardWidth + gap) *
+      itemsPerPage;
+
+
+    portfolioGrid.style.transform =
+      `translate3d(-${moveDistance}px, 0, 0)`;
+
+
+    /* =========================
+       ARROWS
+    ========================= */
+
+    if (portfolioPrev) {
+
+      portfolioPrev.disabled =
+        currentPage === 0;
+
+    }
+
+
+    if (portfolioNext) {
+
+      portfolioNext.disabled =
+        currentPage >=
+        totalPages - 1;
+
+    }
+
+
+    /* =========================
+       DOTS
+    ========================= */
+
+    if (!portfolioDots) return;
+
+
+    portfolioDots.innerHTML = "";
+
+
+    for (
+      let i = 0;
+      i < totalPages;
+      i++
+    ) {
+
+      const dot =
+        document.createElement("button");
+
+      dot.type = "button";
+
+      dot.className =
+        "portfolio-dot";
+
+
+      if (i === currentPage) {
+
+        dot.classList.add("active");
+
+      }
+
+
+      dot.setAttribute(
+        "aria-label",
+        `Go to portfolio page ${i + 1}`
+      );
+
+
+      dot.addEventListener(
+        "click",
+        () => {
+
+          currentPage = i;
+
+          updatePortfolio();
+
+        }
+      );
+
+
+      portfolioDots.appendChild(dot);
+
+    }
+
+  });
+
+}
+
+
+/* =========================
+   NEXT
+========================= */
+
+if (portfolioNext) {
+
+  portfolioNext.addEventListener(
+    "click",
+    () => {
+
+      const totalPages =
+        Math.ceil(
+          getFilteredItems().length /
+          getItemsPerPage()
+        );
+
+
+      if (
+        currentPage <
+        totalPages - 1
+      ) {
+
+        currentPage++;
+
+        updatePortfolio();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================
+   PREVIOUS
+========================= */
+
+if (portfolioPrev) {
+
+  portfolioPrev.addEventListener(
+    "click",
+    () => {
+
+      if (currentPage > 0) {
+
+        currentPage--;
+
+        updatePortfolio();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+
+filterButtons.forEach(button => {
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      filterButtons.forEach(btn => {
+
+        btn.classList.remove(
+          "active"
+        );
+
+      });
+
+
+      button.classList.add(
+        "active"
+      );
+
+
+      currentFilter =
+        button.dataset.filter;
+
+
+      currentPage = 0;
+
 
       updatePortfolio();
 
-    });
-
-    portfolioDots.appendChild(dot);
-  }
-
-}
-
-
-// NEXT
-portfolioNext.addEventListener("click", () => {
-
-  const filteredItems = getFilteredItems();
-
-  const itemsPerPage = getItemsPerPage();
-
-  const totalPages = Math.ceil(
-    filteredItems.length / itemsPerPage
+    }
   );
 
-  if (currentPage < totalPages - 1) {
+});
 
-    currentPage++;
 
-    updatePortfolio();
+/* =========================
+   RESIZE
+========================= */
+
+let portfolioResizeTimer;
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    clearTimeout(
+      portfolioResizeTimer
+    );
+
+
+    portfolioResizeTimer =
+      setTimeout(() => {
+
+        currentPage = 0;
+
+        updatePortfolio();
+
+      }, 150);
 
   }
-
-});
-
-
-// PREVIOUS
-portfolioPrev.addEventListener("click", () => {
-
-  if (currentPage > 0) {
-
-    currentPage--;
-
-    updatePortfolio();
-
-  }
-
-});
+);
 
 
-// FILTER BUTTONS
-filterButtons.forEach(button => {
+/* =========================
+   INITIAL LOAD
+========================= */
 
-  button.addEventListener("click", () => {
-
-    if (button.classList.contains("active")) return;
-
-    filterButtons.forEach(btn => {
-      btn.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    currentFilter = button.dataset.filter;
-
-    currentPage = 0;
-
-    updatePortfolio();
-
-  });
-
-});
-
-
-// Resize
-window.addEventListener("resize", () => {
-
-  updatePortfolio();
-
-});
-
-
-// Initial
 updatePortfolio();
-
-
 
   // Contact form
   const contactForm = document.getElementById("contact-form");
