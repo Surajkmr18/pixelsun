@@ -991,7 +991,7 @@ img {
     }
 
     .portfolio-grid {
-        gap: 0;
+        gap: 4px;
     }
 
     .portfolio-item {
