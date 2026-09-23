@@ -399,6 +399,8 @@ img{
 
     overflow:hidden;
 
+    position:relative;
+
     background:
         radial-gradient(
             circle at 75% 50%,
@@ -641,14 +643,24 @@ img{
    SOCIAL MEDIA
 ========================================================= */
 
+.social-media{
+    position:fixed;
+
+left:5px;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:10;
+    
+}
+
 .social-links{
     display:flex;
 
-    flex-wrap:wrap;
+    flex-direction:column;
 
-    gap:14px;
+    gap:12px;
 
-    margin-top:25px;
+    margin-top:0;
 }
 
 .social-link{
@@ -659,24 +671,22 @@ img{
     align-items:center;
     justify-content:center;
 
-    min-width:100px;
+    width: 40px;
+    height: 40px;
 
-    padding:12px 25px;
+    padding:11px 15px;
 
     color:#fff;
 
     border:1px solid rgba(255,255,255,.2);
 
-    border-radius:25px;
+    border-radius:50px;
 
     background:rgba(255,255,255,.03);
-
-    font-size:14px;
-    font-weight:600;
-
+    
     overflow:hidden;
 
-    transition:
+        transition:
         transform .35s ease,
         border-color .35s ease,
         color .35s ease,
@@ -687,6 +697,7 @@ img{
     content:"";
 
     position:absolute;
+
     inset:0;
 
     background:var(--green);
@@ -699,14 +710,14 @@ img{
 }
 
 .social-link:hover{
-    color:#000;
+    color:#080b0c;
 
     border-color:var(--green);
 
-    transform:translateY(-6px);
+    transform:translateX(5px);
 
     box-shadow:
-        0 10px 30px rgba(200,255,0,.25);
+        0 8px 25px rgba(200,255,0,.15);
 }
 
 .social-link:hover::before{
@@ -2021,7 +2032,7 @@ footer{
     }
 
     .hire-btn{
-        display:none;
+        display:outside;
     }
 
     .menu-toggle{
@@ -2166,8 +2177,36 @@ footer{
         bottom:80px;
     }
 
+
+    /* SOCIAL MEDIA */
+
+    .social-media{
+        position:static;
+        
+
+        transform:none;
+
+        width:100%;
+
+        margin-top:25px;
+    }
+
     .social-links{
+        flex-direction:row;
+
         justify-content:center;
+
+        flex-wrap:wrap;
+
+        gap:10px;
+    }
+
+    .social-link{
+        min-width:auto;
+
+        padding:12px 18px;
+
+        font-size:13px;
     }
 
 
@@ -2379,8 +2418,8 @@ footer{
 @media(max-width:600px){
 
     .social-links{
-        display:grid;
-
+        display:static;
+        
         grid-template-columns:1fr 1fr;
 
         gap:10px;
