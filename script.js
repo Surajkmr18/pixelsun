@@ -1769,11 +1769,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     sendBtn.textContent =
-                        "SEND MESSAGE →";
-
-                }
-
-            }
-        );
-    }
+                        "SEND MESSAGE →"; }
+}
+);
+ }
 });
