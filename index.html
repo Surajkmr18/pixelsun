@@ -1253,45 +1253,80 @@
                     class="contact-form reveal"
                     id="contact-form">
 
-                    <input
-                        type="text"
-                        name="from_name"
-                        placeholder="Your Name"
-                        autocomplete="name"
-                        required>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="from-name">YOUR NAME</label>
+                            <input
+                                id="from-name"
+                                type="text"
+                                name="from_name"
+                                placeholder="Your Name"
+                                autocomplete="name"
+                                required>
+                        </div>
 
+                        <div class="form-field">
+                            <label for="from-email">YOUR EMAIL</label>
+                            <input
+                                id="from-email"
+                                type="email"
+                                name="from_email"
+                                placeholder="Your Email"
+                                autocomplete="email"
+                                required>
+                        </div>
+                    </div>
 
-                    <input
-                        type="email"
-                        name="from_email"
-                        placeholder="Your Email"
-                        autocomplete="email"
-                        required>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="subject">SUBJECT</label>
+                            <input
+                                id="subject"
+                                type="text"
+                                name="subject"
+                                placeholder="What do you need?"
+                                required>
+                        </div>
 
+                        <div class="form-field">
+                            <label for="project-type">PROJECT TYPE</label>
+                            <select id="project-type" name="project_type" required>
+                                <option value="" selected disabled>Select a service</option>
+                                <option value="Logo Design">Logo Design</option>
+                                <option value="Branding">Branding</option>
+                                <option value="Packaging Design">Packaging Design</option>
+                                <option value="Brochure Design">Brochure Design</option>
+                                <option value="Flyer Design">Flyer Design</option>
+                                <option value="Social Media Design">Social Media Design</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
 
-                    <input
-                        type="text"
-                        name="subject"
-                        placeholder="Subject"
-                        required>
+                    <div class="form-field">
+                        <label for="message">PROJECT DETAILS</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            placeholder="Tell me about your project..."
+                            rows="6"
+                            required></textarea>
+                    </div>
 
+                    <div class="form-bottom">
+                        <p class="form-note">
+                            <span>✦</span> I'll get back to you as soon as possible.
+                        </p>
 
-                    <textarea
-                        name="message"
-                        placeholder="Tell me about your project..."
-                        rows="6"
-                        required></textarea>
+                        <button
+                            type="submit"
+                            class="btn"
+                            id="send-btn">
 
+                            SEND MESSAGE →
 
-                    <button
-                        type="submit"
-                        class="btn"
-                        id="send-btn">
-
-                        SEND MESSAGE →
-
-                    </button>
-
+                        </button>
+                    </div>
 
                     <p
                         id="form-status"
