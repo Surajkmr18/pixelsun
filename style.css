@@ -16,6 +16,230 @@
     --gray:#a5a5a5;
 }
 
+/* =========================
+   BUBBLE BACKGROUND EFFECT
+========================= */
+
+.bubble-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    background: #080b0c;
+    pointer-events: none;
+}
+
+/* Bubbles */
+
+.bubble {
+    position: absolute;
+    bottom: -150px;
+
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle at 30% 30%,
+        gray,
+        green 35%,
+        rgba(200, 255, 0, 0.03) 70%,
+        transparent 100%
+    );
+
+    border: 1px solid #4fc3dc;
+
+    box-shadow:
+        0 0 20px #4fc3dc,
+        inset 0 0 20px #34ec0644;
+
+    backdrop-filter: blur(2px);
+
+    animation: bubbleUp linear infinite;
+}
+
+
+/* Different bubbles */
+
+.b1 {
+    left: 5%;
+    width: 45px;
+    height: 45px;
+    animation-duration: 12s;
+    animation-delay: 0s;
+}
+
+.b2 {
+    left: 15%;
+    width: 90px;
+    height: 90px;
+    animation-duration: 18s;
+    animation-delay: 3s;
+}
+
+.b3 {
+    left: 28%;
+    width: 35px;
+    height: 35px;
+    animation-duration: 10s;
+    animation-delay: 1s;
+}
+
+.b4 {
+    left: 40%;
+    width: 120px;
+    height: 120px;
+    animation-duration: 22s;
+    animation-delay: 5s;
+}
+
+.b5 {
+    left: 52%;
+    width: 55px;
+    height: 55px;
+    animation-duration: 14s;
+    animation-delay: 2s;
+}
+
+.b6 {
+    left: 65%;
+    width: 100px;
+    height: 100px;
+    animation-duration: 20s;
+    animation-delay: 6s;
+}
+
+.b7 {
+    left: 75%;
+    width: 40px;
+    height: 40px;
+    animation-duration: 11s;
+    animation-delay: 4s;
+}
+
+.b8 {
+    left: 85%;
+    width: 75px;
+    height: 75px;
+    animation-duration: 16s;
+    animation-delay: 1s;
+}
+
+.b9 {
+    left: 92%;
+    width: 130px;
+    height: 130px;
+    animation-duration: 24s;
+    animation-delay: 7s;
+}
+
+.b10 {
+    left: 35%;
+    width: 25px;
+    height: 25px;
+    animation-duration: 9s;
+    animation-delay: 3s;
+}
+
+
+/* Bubble animation */
+
+@keyframes bubbleUp {
+
+    0% {
+        transform:
+            translateY(0)
+            translateX(0)
+            scale(0.7);
+
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.5;
+    }
+
+    25% {
+        transform:
+            translateY(-25vh)
+            translateX(35px)
+            scale(0.9);
+    }
+
+    50% {
+        transform:
+            translateY(-50vh)
+            translateX(-35px)
+            scale(1);
+    }
+
+    75% {
+        transform:
+            translateY(-75vh)
+            translateX(30px)
+            scale(0.85);
+    }
+
+    100% {
+        transform:
+            translateY(-120vh)
+            translateX(-20px)
+            scale(1.1);
+
+        opacity: 0;
+    }
+}
+
+
+/* Small shine inside bubbles */
+
+.bubble::before {
+    content: "";
+    position: absolute;
+
+    top: 15%;
+    left: 20%;
+
+    width: 18%;
+    height: 18%;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    filter: blur(2px);
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .bubble {
+        opacity: 0.6;
+    }
+
+    .b2,
+    .b4,
+    .b6,
+    .b9 {
+        transform: scale(0.7);
+    }
+}
+
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .bubble {
+        animation: none;
+    }
+}
+
 html{
     scroll-behavior:smooth;
 }
@@ -2541,3 +2765,6 @@ footer{
     }
 
 }
+
+
+
