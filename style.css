@@ -1346,11 +1346,12 @@ left:5px;
 
     border-radius:12px;
 
-    background:#f9f8f8;
+    background: #0ff40f;;
 
     border:1px solid #222;
 
     position:relative;
+    padding: 8px;
 
     cursor:pointer;
 
@@ -1366,35 +1367,57 @@ left:5px;
     will-change:transform;
 }
 
-.portfolio-item::before{
-    content:"";
 
+.portfolio-item::after{
+    content:"";
     position:absolute;
 
-    inset:0;
+    width:80%;
+    height:150%;
 
-    z-index:2;
+    left:5%;
+    top:-5%;
+
+    background:var(--green);
+
+    z-index:0;
+
+    transform:rotate(360deg) scale(1);
+
+    animation:portfolioSquareRotate 10s linear infinite;
+
+    opacity:.95;
+
+    border-radius:6px;
 
     pointer-events:none;
-
-    background:
-        radial-gradient(
-            circle 180px at var(--mx,50%) var(--my,50%),
-            rgba(200,255,0,.20),
-            transparent 70%
-        );
-
-    opacity:0;
-
-    transition:opacity .25s ease;
 }
 
-.portfolio-item:hover::before{
-    opacity:1;
+
+/* Rotating animation */
+
+@keyframes portfolioSquareRotate{
+
+    0%{
+        transform:rotate(0deg) scale(1);
+    }
+
+    50%{
+        transform:rotate(180deg) scale(1.05);
+    }
+
+    100%{
+        transform:rotate(360deg) scale(1);
+    }
+
 }
+
 
 .portfolio-item img{
     display:block;
+
+    position:relative;
+    z-index:1;
 
     width:100%;
     height:100%;
@@ -1407,20 +1430,6 @@ left:5px;
         transform .7s cubic-bezier(.2,.7,.2,1),
         filter .4s ease;
 }
-
-.portfolio-item:hover img{
-    transform:scale(1.06);
-
-    filter:brightness(.72);
-}
-
-.portfolio-item:hover{
-    border-color:var(--green);
-
-    box-shadow:
-        0 20px 50px rgba(200,255,0,.12);
-}
-
 
 /* =========================================================
    PORTFOLIO OVERLAY
